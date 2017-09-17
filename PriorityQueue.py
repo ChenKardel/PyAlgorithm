@@ -74,3 +74,26 @@ def heapSort(a):
     while pq.heapSize != 0:
         a[i] = pq.extractMax()
         i -= 1
+
+#Use Priority Queue To Establish a Stack
+
+
+class Stack:
+    def __init__(self):
+        self.pq = MaxPriorityQueue([])
+        self.values = []
+        self.size = 0
+
+    def push(self, val):
+        self.size += 1
+        self.pq.insert(self.size)
+        self.values += [val]
+
+    def pop(self):
+        self.size -= 1
+        return self.values[self.pq.extractMax()]
+
+    def __len__(self):
+        return self.size
+
+#establish a queue can use the similar way but use a MinProrityQueue instead of a MaxProrityQueue
