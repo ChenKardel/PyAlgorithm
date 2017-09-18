@@ -5,17 +5,13 @@ def exchange(a, i, j):
 def partition(a, l, r):
     i = l
     x = a[r-1]
-    print("partition element x is", x)
+
     for j in range(l, r-1):
         if x > a[j]:
             exchange(a, i, j)
             i += 1
 
     exchange(a, i, r-1)
-    print("left Part", a[l:i])
-    print("right Part", a[i+1:r])
-    print(a)
-    print()
     return i
 
 
@@ -25,6 +21,7 @@ def QuickSortPart(a, l, r):
         i = partition(a, l, r)
         QuickSortPart(a, l, i)
         QuickSortPart(a, i+1, r)
+
 
 def QuickSort(a):
     QuickSortPart(a, 0, len(a))
