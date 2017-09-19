@@ -26,6 +26,7 @@ def CountSort(a, k):
 
     return B
 
+if __name__ == '__main__':
 
-a = [1, 3, 2, 5, 5, 4, 2, 3, 1, 4, 1, 2, 5]
-print(CountSort(a, 5))
+    a = [1, 3, 2, 5, 5, 4, 2, 3, 1, 4, 1, 2, 5]
+    print(CountSort(a, 5))

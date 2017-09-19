@@ -57,7 +57,8 @@ def merge(a, p, q, r):
             i += 1
             Rindex += 1
 
+if __name__ == '__main__':
 
-a = [1, 2, 5, 7, 3, 4, 6, 8]
-mergeSort(a)
-print(a)
+    a = [1, 2, 5, 7, 3, 4, 6, 8]
+    mergeSort(a)
+    print(a)

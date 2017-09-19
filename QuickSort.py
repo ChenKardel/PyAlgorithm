@@ -69,17 +69,18 @@ def ThreeWayQuickSortPart(a, p, q):
 
         ThreeWayQuickSortPart(a, p, m)
         ThreeWayQuickSortPart(a, n, q)
+if __name__ == '__main__':
 
-b = [5, 3, 8, 5, 8, 1, 5, 1, 9, 10, 9, 8, 4, 2, 4, 1, 5]
+    b = [5, 3, 8, 5, 8, 1, 5, 1, 9, 10, 9, 8, 4, 2, 4, 1, 5]
 
-c = []
-for i in range(len(b)):
-    c += [i]
-print(c)
+    c = []
+    for i in range(len(b)):
+        c += [i]
+    print(c)
 
-ThreeWayQuickSort(b)
-print(b)
-#ThreeWayPartition(b, 0, 7)
-#print(b)
+    ThreeWayQuickSort(b)
+    print(b)
+    #ThreeWayPartition(b, 0, 7)
+    #print(b)
 
-#ThreeWayQuickSort(b)
+    #ThreeWayQuickSort(b)
