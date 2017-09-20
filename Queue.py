@@ -1,4 +1,4 @@
-class Queue:
+class LimitationQueue:
     def __init__(self, maxSize):
         self.maxSize = maxSize
         self.content = []
@@ -33,6 +33,11 @@ class Queue:
     def __len__(self):
         return self.size
 
+    def isEmpty(self):
+        if self.size == 0:
+            return True
+        else:
+            return False
 
     def __getattr__(self, item):
         return None
@@ -51,7 +56,7 @@ class Queue:
 
 
 if __name__ == '__main__':
-    q = Queue(10)
+    q = LimitationQueue(10)
     q.enqueue(1)
     q.enqueue(2)
     q.enqueue(3)
