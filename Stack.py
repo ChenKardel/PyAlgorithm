@@ -1,3 +1,4 @@
+import copy
 class LimitationStack:
     def __init__(self, maxSize):
         self.maxSize = maxSize
@@ -39,6 +40,24 @@ class LimitationStack:
 
     def __str__(self):
         return self.content[0:self.size].__str__()
+
+import Queue
+
+class QueueStack:
+    def __init__(self, maxSize):
+        self.q1 = Queue.LimitationQueue(maxSize)
+        self.q2 = Queue.LimitationQueue(maxSize)
+
+    def push(self, a):
+        self.q1.enqueue(a)
+
+    def pop(self):
+        q3 = copy.deepcopy(self.q1)
+        while not q3.isEmpty():
+            self.q2.enqueue(q3.dequeue())
+
+        return self.q2.dequeue()
+
 
 if __name__ == '__main__':
     s = LimitationStack(10)

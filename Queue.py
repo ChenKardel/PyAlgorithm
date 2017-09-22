@@ -1,3 +1,7 @@
+import Stack
+import copy
+
+
 class LimitationQueue:
     def __init__(self, maxSize):
         self.maxSize = maxSize
@@ -17,7 +21,6 @@ class LimitationQueue:
         else:
             self.front += 1
         self.size += 1
-
 
     def dequeue(self):
         if self.size == 0:
@@ -49,10 +52,25 @@ class LimitationQueue:
             else:
                 return self.content[self.tail:self.front] + self.content[0]
         else:
-            return self.content[self.tail:self.maxSize] + self[0:self.front+1]
+            return self.content[self.tail:self.maxSize] + self[0:self.front + 1]
 
     def __str__(self):
         return self.__iter__()
+
+
+class StackQueue:
+    def __init__(self, maxSize):
+        self.s1 = Stack.LimitationStack(maxSize)
+        self.s2 = Stack.LimitationStack(maxSize)
+
+    def enqueue(self, a):
+        self.s1.push(a)
+
+    def dequeue(self):
+        s3 = copy.deepcopy(self.s1)
+        while not s3.isEmpty():
+            self.s2.push(s3.pop())
+        return s3.pop()
 
 
 if __name__ == '__main__':
