@@ -12,11 +12,48 @@ class BinarySearchTree:
         self.root = None
         self.size = 0
 
-    def insert(self, key):
-        pass
+    def insert(self, key, value):
+        node = self.root
+        if node is None:
+            self.root = Node(key=key, value=value, left=None, right=None, parent=None)
+        while True:
+            if key < node.key:
+                if node.left is not None:
+                    node.left = Node(key=key, value=value, left=None, right=None, parent=node)
+                else:
+                    node = node.left
+            elif key > node.key:
+                if node.right is not None:
+                    node.right = Node(key=key, value=value, left=None, right=None, parent=node)
+                node = node.right
+            else:
+                node.value = value
+                # 多种解决方法
 
     def delete(self, key):
-        pass
+        node = self.searchNode(key, self.root)
+        if node.left is None:
+            self.transform(node, node.right)
+        elif node.right is None:
+            self.transform(node, node.left)
+        else:
+            y = self.minimumRecursionPart(node.right)
+            if y.parent == node:
+                self.transform(y, y.right)
+                y.right = node.right
+                y.right.parent = y
+            y.left = node.left
+            y.left.parent = y
+
+    def transform(self, v, u):
+        if v.parent is None:
+            self.root = u
+        elif v == v.parent.left:
+            v.parent.left = u
+        elif v == v.parent.right:
+            v.parent.right = u
+        if v is not None:
+            v.parent = u.parent
 
     def searchNode(self, key, node):
         if node.key == key:
@@ -106,6 +143,7 @@ class BinarySearchTree:
             inorderStr(node.left)
             string += str(node.key)
             inorderStr(node.right)
+
         inorderStr(self.root)
         return string
 

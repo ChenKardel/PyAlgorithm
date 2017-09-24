@@ -22,7 +22,6 @@ import ArrayList
 存有N个元素，self.R = M时，最低效率是search->O(N) append->O(1) delete -> O(1)
 最快效率是每个槽中放的元素个数都相同，此时查找的效率为search->O(1 + N / M)
 """
-
 import copy
 
 
@@ -36,7 +35,7 @@ class LinkedHashMap:
             self.tableHeader.append(copy.deepcopy(a))
 
     def getHashCode(self, key, use=0):
-        #不同的hashCode方式
+        # 不同的hashCode方式
         if use == 0:
             if type(key) == int:
                 return key % self.R
@@ -63,6 +62,52 @@ class LinkedHashMap:
 
     def __len__(self):
         return sum(len(x) for x in self.tableHeader)
+
+
+def LinarFunc(i):
+    return i + 1
+
+
+class OpenHashMap:
+    class DELETED:
+        def __init__(self):
+            pass
+
+    def __init__(self, R=256, M=19, searchHashFunc=LinarFunc):
+        self.R = R
+        self.hashScale = M
+        self.keys = [None] * self.R
+        self.values = [None] * self.R
+        self.DELELTED = OpenHashMap.DELETED()
+        self.searchHashFunc = searchHashFunc
+
+    def getHashCode(self, value):
+        return value % self.hashScale
+
+    def insert(self, key, value):
+        hashCode = self.getHashCode(key)
+        insertPtr = hashCode
+        while self.keys[insertPtr] is not None:
+            insertPtr = self.searchHashFunc(insertPtr)
+        self.keys[insertPtr] = key
+        self.values[insertPtr] = value
+
+    def search(self, key):
+        hashCode = self.getHashCode(key)
+        insertPtr = hashCode
+        while self.keys[insertPtr] != key and self.keys[insertPtr] is not None:
+            insertPtr = self.searchHashFunc(insertPtr)
+        if self.values[insertPtr] == self.DELETED:
+            return None
+        else:
+            return self.values[insertPtr]
+
+    def remove(self, key):
+        hashCode = self.getHashCode(key)
+        insertPtr = hashCode
+        while self.keys[insertPtr] != key and self.keys[insertPtr] is not None:
+            insertPtr = self.searchHashFunc(insertPtr)
+        self.values[insertPtr] = self.DELETED
 
 
 if __name__ == '__main__':
