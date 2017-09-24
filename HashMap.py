@@ -64,16 +64,26 @@ class LinkedHashMap:
         return sum(len(x) for x in self.tableHeader)
 
 
-def LinarFunc(i):
-    return i + 1
+"""
+Hash值得取法和探查的方法是种艺术
+一般图简便用线性探测法，就是一个一个向下查
+但是其实这种方法效率非常之低
+还可以用二次探查法，就是 hash(next) = c1 * i ^ 2 + c0 * i + hash(now) 虽然有点蠢,其实感觉还是线性探测法换汤不换药
+还有高端点的比如说双函数探测
+其实就那意思
+其实我认为这个只需要用统一的变换方式就够了，其他的不重要
+"""
 
+
+def doubleSearch(Hash, m=2, c1=5, c2=3):
+    return c1 * m * m + c2 * m + Hash
 
 class OpenHashMap:
     class DELETED:
         def __init__(self):
             pass
 
-    def __init__(self, R=256, M=19, searchHashFunc=LinarFunc):
+    def __init__(self, R=256, M=19, searchHashFunc=lambda i: (i + 1)):
         self.R = R
         self.hashScale = M
         self.keys = [None] * self.R
@@ -81,14 +91,17 @@ class OpenHashMap:
         self.DELELTED = OpenHashMap.DELETED()
         self.searchHashFunc = searchHashFunc
 
-    def getHashCode(self, value):
-        return value % self.hashScale
+    def getHashCode(self, value, hashFunc=None):
+        if hashFunc is None:
+            return value % self.hashScale
+        else:
+            return hashFunc(value)
 
     def insert(self, key, value):
         hashCode = self.getHashCode(key)
         insertPtr = hashCode
         while self.keys[insertPtr] is not None:
-            insertPtr = self.searchHashFunc(insertPtr)
+            insertPtr = self.getHashCode(self.searchHashFunc(insertPtr))
         self.keys[insertPtr] = key
         self.values[insertPtr] = value
 
@@ -96,7 +109,7 @@ class OpenHashMap:
         hashCode = self.getHashCode(key)
         insertPtr = hashCode
         while self.keys[insertPtr] != key and self.keys[insertPtr] is not None:
-            insertPtr = self.searchHashFunc(insertPtr)
+            insertPtr = self.getHashCode(self.searchHashFunc(insertPtr))
         if self.values[insertPtr] == self.DELETED:
             return None
         else:
@@ -106,14 +119,17 @@ class OpenHashMap:
         hashCode = self.getHashCode(key)
         insertPtr = hashCode
         while self.keys[insertPtr] != key and self.keys[insertPtr] is not None:
-            insertPtr = self.searchHashFunc(insertPtr)
+            insertPtr = self.getHashCode(self.searchHashFunc(insertPtr))
         self.values[insertPtr] = self.DELETED
 
-
+"""
+不敢写全域散列表（瑟瑟发抖）
+"""
 if __name__ == '__main__':
     a = []
     for i in range(100):
         a.append((i, 100 - i))
-    linkList = LinkedHashMap()
+    linkList = OpenHashMap()
     for i in a:
-        linkList.append(i[0], i[1])
+        linkList.insert(i[0], i[1])
+    print(linkList.search(5))
