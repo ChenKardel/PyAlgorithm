@@ -35,9 +35,11 @@ class LinkedHashMap:
         for i in range(self.R):
             self.tableHeader.append(copy.deepcopy(a))
 
-    def getHashCode(self, key):
-        if type(key) == int:
-            return key % self.R
+    def getHashCode(self, key, use=0):
+        #不同的hashCode方式
+        if use == 0:
+            if type(key) == int:
+                return key % self.R
 
     def append(self, key, value):
         val = self.getHashCode(key=key)
@@ -70,4 +72,3 @@ if __name__ == '__main__':
     linkList = LinkedHashMap()
     for i in a:
         linkList.append(i[0], i[1])
-
