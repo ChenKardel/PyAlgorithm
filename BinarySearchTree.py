@@ -7,6 +7,8 @@ class Node:
         self.parent = parent
 
 
+# TODO:DEBUG THE FUNCTION 'insert' AND THE FUNCTION 'delete'
+
 class BinarySearchTree:
     def __init__(self):
         self.root = None
@@ -16,7 +18,7 @@ class BinarySearchTree:
         node = self.root
         if node is None:
             self.root = Node(key=key, value=value, left=None, right=None, parent=None)
-        while True:
+        while node is not None:
             if key < node.key:
                 if node.left is not None:
                     node.left = Node(key=key, value=value, left=None, right=None, parent=node)
@@ -115,15 +117,19 @@ class BinarySearchTree:
         self.inorderPrintRecursionPart(self.root)
 
     def inorderPrintRecursionPart(self, node):
+        if node is None:
+            return
         self.inorderPrintRecursionPart(node.left)
-        print(node.key)
+        print(node.key, end=" ")
         self.inorderPrintRecursionPart(node.right)
 
     def preorderPrint(self):
         self.preorderPrintRecursionPart(self.root)
 
     def preorderPrintRecursionPart(self, node):
-        print(node.key)
+        if node is None:
+            return
+        print(node.key, end=" ")
         self.inorderPrintRecursionPart(node.left)
         self.inorderPrintRecursionPart(node.right)
 
@@ -131,17 +137,21 @@ class BinarySearchTree:
         self.proderPrintRecursionPart(self.root)
 
     def proderPrintRecursionPart(self, node):
+        if node is None:
+            return
         self.proderPrintRecursionPart(node.left)
         self.proderPrintRecursionPart(node.right)
-        print(node.key)
+        print(node.key, end=" ")
 
     def __str__(self):
-        global string
+
         string = ""
 
         def inorderStr(node):
+            if node is None:
+                return
             inorderStr(node.left)
-            string += str(node.key)
+
             inorderStr(node.right)
 
         inorderStr(self.root)
@@ -149,3 +159,13 @@ class BinarySearchTree:
 
     def __len__(self):
         return self.size
+
+
+if __name__ == '__main__':
+    b = BinarySearchTree()
+    b.insert(5, "l")
+    b.insert(4, "e")
+    b.insert(7, "o")
+    b.insert(3, "h")
+    b.insert(6, "l")
+    b.inorderPrint()
