@@ -1,3 +1,19 @@
+"""
+我最不愿意面对的倒数第二大数据结构
+最不愿意面对的是红黑二叉树
+感觉超级难
+而且效率并不如散列表
+但是树形结构是很重要的
+这个红黑二叉树也很重要
+
+"""
+
+
+
+
+
+
+
 class Node:
     def __init__(self, key=None, value=None, left=None, right=None, parent=None):
         self.key = key
@@ -18,19 +34,24 @@ class BinarySearchTree:
         node = self.root
         if node is None:
             self.root = Node(key=key, value=value, left=None, right=None, parent=None)
-        while node is not None:
-            if key < node.key:
-                if node.left is not None:
-                    node.left = Node(key=key, value=value, left=None, right=None, parent=node)
+        else:
+            while True:
+                if key < node.key:
+                    if node.left is None:
+                        node.left = Node(key=key, value=value, left=None, right=None, parent=node)
+                        break
+                    else:
+                        node = node.left
+                elif key > node.key:
+                    if node.right is None:
+                        node.right = Node(key=key, value=value, left=None, right=None, parent=node)
+                        break
+                    else:
+                        node = node.right
                 else:
-                    node = node.left
-            elif key > node.key:
-                if node.right is not None:
-                    node.right = Node(key=key, value=value, left=None, right=None, parent=node)
-                node = node.right
-            else:
-                node.value = value
-                # 多种解决方法
+                    node.value = value
+                    break
+        self.size += 1  # 多种解决方法
 
     def delete(self, key):
         node = self.searchNode(key, self.root)
@@ -96,22 +117,22 @@ class BinarySearchTree:
         return y
 
     def maximum(self):
-        return self.maximumRecursionPart(self.root)
+        return self.maximumRecursionPart(self.root).key
 
     def maximumRecursionPart(self, node):
         if node.right is not None:
             return self.maximumRecursionPart(node=node.right)
         else:
-            return node.key
+            return node
 
     def minimum(self):
-        self.minimumRecursionPart(self.root)
+        return self.minimumRecursionPart(self.root).key
 
     def minimumRecursionPart(self, node):
         if node.left is not None:
             return self.minimumRecursionPart(node.left)
         else:
-            return node.key
+            return node
 
     def inorderPrint(self):
         self.inorderPrintRecursionPart(self.root)
@@ -119,8 +140,10 @@ class BinarySearchTree:
     def inorderPrintRecursionPart(self, node):
         if node is None:
             return
+
         self.inorderPrintRecursionPart(node.left)
-        print(node.key, end=" ")
+        if node is not None:
+            print(node.key, end=" ")
         self.inorderPrintRecursionPart(node.right)
 
     def preorderPrint(self):
@@ -129,7 +152,8 @@ class BinarySearchTree:
     def preorderPrintRecursionPart(self, node):
         if node is None:
             return
-        print(node.key, end=" ")
+        if node is not None:
+            print(node.key, end=" ")
         self.inorderPrintRecursionPart(node.left)
         self.inorderPrintRecursionPart(node.right)
 
@@ -141,20 +165,21 @@ class BinarySearchTree:
             return
         self.proderPrintRecursionPart(node.left)
         self.proderPrintRecursionPart(node.right)
-        print(node.key, end=" ")
+        if node is not None:
+            print(node.key, end=" ")
 
     def __str__(self):
 
         string = ""
 
-        def inorderStr(node):
+        def inorderStr(node, string):
             if node is None:
                 return
-            inorderStr(node.left)
+            inorderStr(node.left, string)
+            string += str(node.key)
+            inorderStr(node.right, string)
 
-            inorderStr(node.right)
-
-        inorderStr(self.root)
+        inorderStr(self.root, string)
         return string
 
     def __len__(self):
@@ -168,4 +193,17 @@ if __name__ == '__main__':
     b.insert(7, "o")
     b.insert(3, "h")
     b.insert(6, "l")
+    b.insert(1, "W")
+    b.insert(8, "o")
+    b.insert(2, "r")
+    b.insert(9, "l")
+    b.insert(10, "d")
+    b.prorderPrint()
+    print()
+    b.preorderPrint()
+    print()
     b.inorderPrint()
+    print()
+    print("------------------")
+    print(b.minimum())
+    print(b.maximum())
