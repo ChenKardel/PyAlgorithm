@@ -9,11 +9,6 @@
 """
 
 
-
-
-
-
-
 class Node:
     def __init__(self, key=None, value=None, left=None, right=None, parent=None):
         self.key = key
@@ -61,13 +56,15 @@ class BinarySearchTree:
             self.transform(node, node.left)
         else:
             y = self.minimumRecursionPart(node.right)
-            if y.parent == node:
+            if y.parent != node:
                 self.transform(y, y.right)
                 y.right = node.right
                 y.right.parent = y
+            self.transform(node, y)
             y.left = node.left
             y.left.parent = y
 
+    # transform只是对被换节点的parent交代，并没有交代被换节点的left和right
     def transform(self, v, u):
         if v.parent is None:
             self.root = u
@@ -198,10 +195,7 @@ if __name__ == '__main__':
     b.insert(2, "r")
     b.insert(9, "l")
     b.insert(10, "d")
-    b.prorderPrint()
-    print()
-    b.preorderPrint()
-    print()
+
     b.inorderPrint()
     print()
     print("------------------")
