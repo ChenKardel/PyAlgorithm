@@ -16,6 +16,7 @@ RED = False
 5.对于每个节点，从该节点到其所有后代叶节点的简单路径上，均包含相同数目的黑色节点
 
 对于3性质，我们将所有的NIL以常量 self.NIL = Node(None, None, None, None, None, Black)代替而不是简单的NIL，为了简化算法
+红黑树可以看做是2-3树的一种具体实现
 """
 
 
@@ -36,6 +37,7 @@ class BlackRedTree:
             self.color = color
 
     def insert(self, key, value):
+        # 插入某个点，插入之后进行颜色补正
         z = BlackRedTree.Node(key, value, self.NIL, self.NIL, self.NIL, BLACK)
         y = self.NIL
         x = self.root
@@ -59,28 +61,35 @@ class BlackRedTree:
         else:
             y.value = z.value
         z.color = RED
+        # 当完成插入的时候，需要进行颜色的补正
+        # 可能违背的性质：性质2或4，并且在补正的情况下也可能不断地违背。
         self.insertFixUp(z)
 
     def insertFixUp(self, node):
         """
+        插入时颜色补正
         :type node: BlackRedTree.Node
         """
         while node.color == RED:
             y = node.parent.parent
             if node.parent == y.left:
                 if y.right.color == RED:
+                    # case1
                     y.right.color = BLACK
                     y.left.color = BLACK
                     y.color = RED
                     node = y
                 elif node.parent.right == node:
+                    # case2
+                    # case2是个转变的过程，将这种情形转化到case3并且用case3处理
                     node = node.parent
                     self.rotateLeft(node)
+                # case 3
                 y = node.parent.parent
                 self.rotateRight(y)
                 y.color = RED
                 node.parent.color = BLACK
-            else:
+            else:  # 与上面是镜像关系
                 if y.left.color == RED:
                     y.left.color = BLACK
                     y.right.color = BLACK
@@ -96,6 +105,10 @@ class BlackRedTree:
         self.root.color = BLACK
 
     def rotateRight(self, node):
+        """
+        向右旋转
+        :type node: BlackRedTree.Node
+        """
         y = node.left
         if y.right != self.NIL:
             node.left = y.right
@@ -110,7 +123,7 @@ class BlackRedTree:
 
     def rotateLeft(self, node):
         """
-
+        向左旋转
         :type node: BlackRedTree.Node
         """
         y = node.right
