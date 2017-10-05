@@ -15,12 +15,52 @@
 
 
 def cutRod(p, n):
+    """
+    无脑分治的钢筋截取，求价值最大值
+    :param p: 价值表
+    :param n: 现有钢筋的长度
+    :return: 切法
+    """
     if n == 0:
         return 0
     q = float("-inf")
-    for i in range(1, n+1):
+    for i in range(1, n + 1):
         q = max(q, p[i] + cutRod(p, n - i))
     return q
 
-p = [0, 1, 5, 8, 9, 10, 17, 17, 20, 24, 30]
-print(cutRod(p, 7))
+
+def cutRodFromBottom(p, n):
+    recorder = [0] * (n + 1)
+    for i in range(0, n + 1):
+        q = float("-inf")
+
+        for j in range(i + 1):
+            q = max(q, p[i - j] + recorder[j])
+        recorder[i] = q
+    return recorder[n]
+
+
+def cutRodWithRecord(p: list, n: int):
+    recorder = [float("-inf")] * (n + 1)
+    return cutRodWithRecordRecursionPart(p, recorder, n)
+
+
+def cutRodWithRecordRecursionPart(p: list, recorder: list, l: int):
+    if recorder[l] >= 0:
+        return recorder[l]
+    if l == 0:
+        q = 0
+    else:
+        q = float("-inf")
+        for i in range(1, l + 1):
+            q = max(q, p[i] + cutRodWithRecordRecursionPart(p, recorder, l - i))
+    recorder[l] = q
+    return q
+
+
+def cutRodMain():
+    p = [0, 1, 5, 8, 9, 10, 17, 17, 20, 24, 30]
+    print(cutRod(p, 7))
+    print(cutRodFromBottom(p, 7))
+    print(cutRodWithRecord(p, 7))
+
