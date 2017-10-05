@@ -58,9 +58,34 @@ def cutRodWithRecordRecursionPart(p: list, recorder: list, l: int):
     return q
 
 
+def cutRodFromBottomGivenSolution(p, n):
+    recorder = [0] * (n + 1)
+    solutionMatrix = [[0].copy()] * (n + 1)
+    print(solutionMatrix)
+    for i in range(0, n + 1):
+        q = float("-inf")
+        solution = []
+        maxIndex = 0
+        maxSubIndex = 0
+        # 挑选最大的赋给q i 是子问题（钢条）的规模（大小）， j是在子问题中如何截取一次（街区一次后将右边换成另一个子问题）
+        for j in range(i + 1):
+            if q < p[i - j] + recorder[j]:
+                q = p[i - j] + recorder[j]
+                maxIndex = i - j
+                maxSubIndex = j
+        print(maxIndex)
+        print(maxSubIndex)
+        solution = solutionMatrix[maxIndex].copy() + solutionMatrix[maxSubIndex].copy()
+        recorder[i] = q
+        solutionMatrix[i] = solution
+        # print(solutionMatrix)
+    return recorder[n], solutionMatrix[n]
+
+
 def cutRodMain():
     p = [0, 1, 5, 8, 9, 10, 17, 17, 20, 24, 30]
-    print(cutRod(p, 7))
-    print(cutRodFromBottom(p, 7))
-    print(cutRodWithRecord(p, 7))
+    print(cutRodFromBottomGivenSolution(p, 7))
+
+if __name__ == '__main__':
+    cutRodMain()
 
