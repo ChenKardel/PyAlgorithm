@@ -10,7 +10,6 @@
 """
 
 
-
 def parent(i):
     return int(i // 2)
 
@@ -24,7 +23,6 @@ def right(i):
 
 
 class MaxPriorityQueue:
-
     def exchange(self, i, j):
         self.array[i], self.array[j] = self.array[j], self.array[i]
 
@@ -61,24 +59,92 @@ class MaxPriorityQueue:
             i = parent(i)
 
     def insert(self, key):
-        self.array += [key]
-        self.heapSize += 1
-        self.swim(key)
+        if len(self.array) - 1 > self.heapSize:  # 减去数组头
+            self.array[self.heapSize + 1] = key
+            self.heapSize += 1
+        else:
+            self.array += [key]
+            self.heapSize += 1
+            self.swim(key)
 
     def maxHeapify(self, i):
-        max = 0
+        # maxItem = 0
         if left(i) < len(self.array) and self.array[i] < self.array[left(i)]:
-            max = left(i)
+            maxItem = left(i)
         else:
-            max = i
-        if right(i) < len(self.array) and self.array[right(i)] > self.array[max]:
-            max = right(i)
-        if max != i:
-            self.exchange(max, i)
-            self.maxHeapify(i)
+            maxItem = i
+        if right(i) < len(self.array) and self.array[right(i)] > self.array[maxItem]:
+            maxItem = right(i)
+        if maxItem != i:
+            self.exchange(maxItem, i)
+            self.maxHeapify(maxItem)
 
     def __str__(self):
         return self.array.__str__()
+
+
+class MinPriorityQueue:
+    def __init__(self, array=None):
+        if array is None:
+            array = []
+        self.array = [float("-inf")] + array
+        self.size = 0
+        self.buildHeap()
+
+    def exchange(self, i, j):
+        self.array[i], self.array[j] = self.array[j], self.array[i]
+
+    def getSize(self):
+        return self.size
+
+    def getMin(self):
+        return self.array[1]
+
+    def extractMin(self):
+        if self.size == 0:
+            raise IndexError("UnderFlow")
+        a = self.array[1]
+        self.exchange(self.size, 1)
+        self.size -= 1
+        self.minHeapify(1)
+        return a
+
+    def minHeapify(self, i):
+        if left(i) > self.size:
+            minItem = i
+        elif self.array[i] > self.array[left(i)]:
+            minItem = left(i)
+        else:
+            minItem = i
+        if right(i) > self.size:
+            minItem = minItem
+        elif self.array[minItem] > self.array[right(i)]:
+            minItem = right(i)
+        if minItem != i:
+
+            self.exchange(i, minItem)
+            self.minHeapify(minItem)
+
+    def insert(self, key):
+        if len(self.array) - 1 > self.size:
+            self.array[self.size + 1] = key
+            self.size += 1
+        else:
+            self.array += [key]
+            self.size += 1
+        self.swim(self.size)
+
+    def swim(self, i):
+        if self.array[i] < self.array[parent(i)]:
+            self.exchange(i, parent(i))
+            self.swim(parent(i))
+
+    def buildHeap(self):
+        for i in range(self.size, 0):
+            self.minHeapify(i)
+
+    def __str__(self):
+        return self.array[1: self.size + 1].__str__()
 
 
 def heapSort(a):
@@ -88,7 +154,8 @@ def heapSort(a):
         a[i] = pq.extractMax()
         i -= 1
 
-#Use Priority Queue To Establish a Stack
+
+# Use Priority Queue To Establish a Stack
 
 
 class Stack:
@@ -109,4 +176,8 @@ class Stack:
     def __len__(self):
         return self.size
 
-#establish a queue can use the similar way but use a MinProrityQueue instead of a MaxProrityQueue
+        # establish a queue can use the similar way but use a MinProrityQueue instead of a MaxProrityQueue
+
+
+if __name__ == '__main__':
+    pass

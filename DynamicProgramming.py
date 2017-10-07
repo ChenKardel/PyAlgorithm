@@ -84,8 +84,34 @@ def cutRodFromBottomGivenSolution(p, n):
 
 def cutRodMain():
     p = [0, 1, 5, 8, 9, 10, 17, 17, 20, 24, 30]
-    print(cutRodFromBottomGivenSolution(p, 7))
 
-if __name__ == '__main__':
-    cutRodMain()
 
+def MatrixMultiOrder(sizes: list):
+    """
+    sizes是矩阵的规模，比如矩阵有n个，len(sizes) 就是 n + 1（第一个矩阵要算两个规模（长和宽））
+    :type sizes: list
+    """
+    n = len(sizes) - 1
+    m = [[0] * n for i in range(n)]
+
+    for length in range(1, len(sizes)):  # for length=1 to sizes.length-1
+        endOfStart = len(sizes) - length  # the end of the left pod
+        for start in range(1, endOfStart + 1):  # for start(startPoint)=1 to endOfStart
+            if float(m[start][start + length - 1]) < float("inf"):  # TODO
+                pass
+            if start == start + length:
+                m[start][start + length - 1] = 0
+            m[start][start + length - 1] = float("inf")
+            for k in range(start, start + length):  # k is the partition element
+                # for k=start to start+length
+                q = m[start][k] + m[k][start + length - 1] + sizes[start - 1] * sizes[k] * sizes[start + length - 1]
+                if q < m[start][start + length - 1]:
+                    m[start][start + length - 1] = q
+    return m[1][sizes.__len__()]
+
+
+def MatrixChainOrder():
+    pass
+
+
+print(MatrixMultiOrder([5, 10, 3, 12, 5, 50]))
