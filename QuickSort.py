@@ -37,11 +37,8 @@ def QuickSort(a):
     QuickSortPart(a, 0, len(a))
 
 
-
-
 # 三向排序，快速排序的一个变式
 def ThreeWayPartition(a, lo, hi):
-
     lt = lo
     i = lo + 1
     x = a[lo]
@@ -69,6 +66,8 @@ def ThreeWayQuickSortPart(a, p, q):
 
         ThreeWayQuickSortPart(a, p, m)
         ThreeWayQuickSortPart(a, n, q)
+
+
 if __name__ == '__main__':
 
     b = [5, 3, 8, 5, 8, 1, 5, 1, 9, 10, 9, 8, 4, 2, 4, 1, 5]
@@ -80,7 +79,7 @@ if __name__ == '__main__':
 
     ThreeWayQuickSort(b)
     print(b)
-    #ThreeWayPartition(b, 0, 7)
-    #print(b)
+    # ThreeWayPartition(b, 0, 7)
+    # print(b)
 
-    #ThreeWayQuickSort(b)
+    # ThreeWayQuickSort(b)

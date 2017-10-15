@@ -65,7 +65,7 @@ class MaxPriorityQueue:
         else:
             self.array += [key]
             self.heapSize += 1
-            self.swim(key)
+        self.swim(self.heapSize)
 
     def maxHeapify(self, i):
         # maxItem = 0
